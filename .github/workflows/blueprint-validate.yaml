@@ -1,0 +1,31 @@
+name: Validate Blueprint catalog content
+
+on:
+  workflow_call:
+
+env:
+  CATALOG_FILE: .blueprint/catalog-info.yaml
+
+jobs:
+  validate:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check if YAML file changed
+        id: file-check
+        run: |
+          echo "Checking for changes in ${{ env.CATALOG_FILE }}"
+          git fetch origin ${{ github.event.before }}
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "${{ env.CATALOG_FILE }}"; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate YAML via API
+        if: steps.file-check.outputs.changed == 'true'
+        run: |
+          echo "Validating YAML file..."

@@ -1,0 +1,9 @@
+name: Test YAML Validation Workflow
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    uses: ./.github/workflows/validate-yaml.yml@main
