@@ -2,6 +2,11 @@ name: Validate Blueprint catalog content
 
 on:
   workflow_call:
+    secrets:
+      BACKSTAGE_BASE_URL:
+        required: true
+      BACKSTAGE_API_TOKEN:
+        required: true
 
 env:
   CATALOG_FILE: .blueprint/catalog-info.yaml
