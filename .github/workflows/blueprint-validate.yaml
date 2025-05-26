@@ -36,6 +36,10 @@ jobs:
       - name: Validate ${{ env.CATALOG_FILE }}
         if: steps.file-check.outputs.changed == 'true'
         run: |
+          ORG_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+          REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+          BRANCH_NAME=$(echo $GITHUB_REF | sed 's|refs/heads/||')
+  
           awk 'BEGIN{n=0;} /^---/{n++} {print > ("entity_" n ".yaml")}' "${{ env.CATALOG_FILE }}"
           for entity in entity_*.yaml; do
             echo "--- Validating entity ---"
@@ -44,7 +48,7 @@ jobs:
             response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
-              -d "{\"location\": \"url: https://github.com/aparteas/workflows/blob/main/.blueprint/catalog-info.yaml\", \"entity\": $json}")
+              -d "{\"location\": \"url:https://github.com/$ORG_NAME/$REPO_NAME/blob/$BRANCH_NAME/${{ env.CATALOG_FILE }}\", \"entity\": $json}")
             
             status_code="${response: -3}"
             body=$(cat response.json)
