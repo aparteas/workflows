@@ -3,7 +3,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: Blueprint
-  description: OBOS developer portal 2
+  description: OBOS developer portal
   tags:
     - react
     - typescript
