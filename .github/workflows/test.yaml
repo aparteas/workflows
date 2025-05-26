@@ -6,4 +6,4 @@ on:
 
 jobs:
   validate:
-    uses: ./.github/workflows/validate-yaml.yml
+    uses: ./.github/workflows/blueprint-validate.yaml
