@@ -1,2 +1,32 @@
-test:
-  one: hello2
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-component
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Blueprint
+  description: OBOS developer portal
+  tags:
+    - react
+    - typescript
+    - node
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: website
+  owner: team-dx
+  lifecycle: experimental
+  dependsOn:
+    - resource:blueprint-db
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-resource
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: blueprint-db
+  title: Blueprint database
+  description: Database for Blueprint state
+  tags:
+    - postgres
+spec:
+  type: database
+  owner: team-dx
+  lifecycle: experimental
