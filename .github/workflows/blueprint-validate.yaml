@@ -44,7 +44,7 @@ jobs:
             response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
-              -d "{\"location\": \"url: https://raw.githubusercontent.com/aparteas/workflows/refs/heads/main/.blueprint/catalog-info.yaml\", \"entity\": $json}")
+              -d "{\"location\": \"url: https://github.com/aparteas/workflows/blob/main/.blueprint/catalog-info.yaml\", \"entity\": $json}")
             
             status_code="${response: -3}"
             body=$(cat response.json)
