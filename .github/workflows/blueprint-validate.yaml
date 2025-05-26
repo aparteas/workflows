@@ -38,9 +38,18 @@ jobs:
             cat "$entity"
             echo ""
             json=$(yq -o=json "$entity")
-            curl --fail -X POST "https://blueprint.obos.dev/api/catalog/validate-entity" \
+            response=$(curl -s -w "%{http_code}" -o response.json -X POST "https://blueprint.obos.dev/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
-              -d "{\"location\": \"${{ env.CATALOG_FILE }}\", \"entity\": $json}"
+              -d "{\"location\": \"${{ env.CATALOG_FILE }}\", \"entity\": $json}")
+            
+            status_code="${response: -3}"
+            body=$(cat response.json)
+            if [ "$status_code" -ne 200 ]; then
+              echo "❌ Validation failed with status code $status_code"
+              echo "$body"
+              exit 1
+            fi
+
                                    
                                    done
