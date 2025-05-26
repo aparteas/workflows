@@ -38,7 +38,7 @@ jobs:
             cat "$entity"
             echo ""
             json=$(yq -o=json "$entity")
-            curl -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
+            curl -X POST "https://blueprint.obos.dev/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
               -d "{\"location\": \"${{ env.CATALOG_FILE }}\", \"entity\": $json}"
