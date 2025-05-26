@@ -6,4 +6,4 @@ on:
 
 jobs:
   validate:
-    uses: ./.github/workflows/validate-yaml.yml@main
+    uses: ./.github/workflows/validate-yaml.yml
