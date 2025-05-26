@@ -40,7 +40,7 @@ jobs:
           for entity in entity_*.yaml; do
             echo "--- Validating entity ---"
             json=$(yq -o=json "$entity")
-            cat "$json"
+            cat "$entity"
             response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
