@@ -5,6 +5,9 @@ on:
 
 env:
   CATALOG_FILE: .blueprint/catalog-info.yaml
+  BACKSTAGE_BASE_URL: ${{ secrets.BACKSTAGE_BASE_URL }}
+  BACKSTAGE_API_TOKEN: ${{ secrets.BACKSTAGE_API_TOKEN }}
+
 
 jobs:
   validate:
@@ -34,4 +37,10 @@ jobs:
             echo "Validating entity:"
             cat "$entity"
             echo ""
-          done
+            json=$(yq -o=json "$entity")
+            curl -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
+              -d "{\"location\": \"${{ env.CATALOG_FILE }}\", \"entity\": $json}"
+                                   
+                                   done
