@@ -3,19 +3,21 @@ name: Validate Blueprint catalog content
 on:
   workflow_call:
 
+env:
+  CATALOG_FILE: .blueprint/catalog-info.yaml
+
 jobs:
   validate:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
-    env:
-      CATALOG_FILE: .blueprint/catalog-info.yaml
+    secrets:
       BACKSTAGE_BASE_URL: ${{ secrets.BACKSTAGE_BASE_URL }}
       BACKSTAGE_API_TOKEN: ${{ secrets.BACKSTAGE_API_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check if ${{ env.CATALOG_FILE }} has changed - ${{ env.BACKSTAGE_BASE_URL }} -
+      - name: Check if ${{ env.CATALOG_FILE }} has changed
         id: file-check
         run: |
           echo "Checking for changes in ${{ env.CATALOG_FILE }}"
@@ -34,7 +36,7 @@ jobs:
             echo "--- Validating entity ---"
             cat "$entity"
             json=$(yq -o=json "$entity")
-            response=$(curl -s -w "%{http_code}" -o response.json -X POST "https://blueprint.obos.dev/api/catalog/validate-entity" \
+            response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
               -d "{\"location\": \"${{ env.CATALOG_FILE }}\", \"entity\": $json}")
