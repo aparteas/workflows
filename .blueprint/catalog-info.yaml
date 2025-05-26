@@ -11,8 +11,8 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
 spec:
-#  type: website
-#  owner: team-dx
+  type: website
+  owner: team-dx
   lifecycle: experimental
   dependsOn:
     - resource:blueprint-db
