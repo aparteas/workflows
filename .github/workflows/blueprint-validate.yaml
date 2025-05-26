@@ -10,7 +10,7 @@ jobs:
   validate:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
-    secrets:
+    env:
       BACKSTAGE_BASE_URL: ${{ secrets.BACKSTAGE_BASE_URL }}
       BACKSTAGE_API_TOKEN: ${{ secrets.BACKSTAGE_API_TOKEN }}
     steps:

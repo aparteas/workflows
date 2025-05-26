@@ -7,3 +7,7 @@ on:
 jobs:
   blueprint:
     uses: ./.github/workflows/blueprint-validate.yaml
+    secrets:
+      BACKSTAGE_BASE_URL: ${{ secrets.BACKSTAGE_BASE_URL }}
+      BACKSTAGE_API_TOKEN: ${{ secrets.BACKSTAGE_API_TOKEN }}
+
