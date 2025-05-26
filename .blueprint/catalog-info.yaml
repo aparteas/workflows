@@ -2,7 +2,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: Blueprint
+  name: Blueprint sdfsdf
   description: OBOS developer portal
   tags:
     - react
