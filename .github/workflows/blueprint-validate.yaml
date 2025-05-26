@@ -41,6 +41,7 @@ jobs:
             echo "--- Validating entity ---"
             json=$(yq -o=json "$entity")
             cat "$entity"
+            echo "$json"
             response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
