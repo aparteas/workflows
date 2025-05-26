@@ -28,7 +28,7 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Validate ${{ env.CATALOG_FILE }}
+      - name: Validate ${{ env.CATALOG_FILE }} ${{ env.BACKSTAGE_BASE_URL }} ${{ env.BACKSTAGE_API_TOKEN }}
         if: steps.file-check.outputs.changed == 'true'
         run: |
           echo "Splitting file..."
@@ -38,9 +38,9 @@ jobs:
             cat "$entity"
             echo ""
             json=$(yq -o=json "$entity")
-            curl -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
+            curl -X POST "${{ env.BACKSTAGE_BASE_URL }}/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
-              -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
+              -H "Authorization: Bearer ${{ env.BACKSTAGE_API_TOKEN }}" \
               -d "{\"location\": \"${{ env.CATALOG_FILE }}\", \"entity\": $json}"
                                    
                                    done

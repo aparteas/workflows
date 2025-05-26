@@ -22,7 +22,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   name: blueprint-db
-  title: Blueprint database 1
+  title: Blueprint database
   description: Database for Blueprint state
   tags:
     - postgres
