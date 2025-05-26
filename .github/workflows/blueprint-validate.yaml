@@ -44,7 +44,6 @@ jobs:
           for entity in entity_*.yaml; do
             echo "--- Validating entity ---"
             json=$(yq -o=json "$entity")
-            cat "$entity"
             response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
@@ -54,9 +53,8 @@ jobs:
             body=$(cat response.json)
             echo "$body"
             if [ "$status_code" -ne 200 ]; then
+              cat "$entity"
               echo "❌ Validation failed with status code $status_code"
               exit 1
             fi
-
-                                   
-                                   done
+          done
