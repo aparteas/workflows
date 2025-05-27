@@ -42,7 +42,7 @@ jobs:
           for entity in entity_*.yaml; do
             KIND=$(cat "$entity" | yq '.kind')
             NAME=$(cat "$entity" | yq '.metadata.name')
-            echo "--- Validating kind:$KIND, metdata.name: $NAME"
+            echo "--- Validating $KIND:$NAME"
             json=$(yq -o=json "$entity")
             response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BLUEPRINT_BASE_URL/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
