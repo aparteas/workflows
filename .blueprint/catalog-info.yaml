@@ -2,7 +2,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: Blueprint df
+  name: Blueprint
   description: OBOS developer porta
   tags:
     - react
