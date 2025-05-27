@@ -30,3 +30,15 @@ spec:
   type: database
   owner: team-dx
   lifecycle: experimental
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: sms-styrerommet-api
+  description: Integration API for sending SMS, exposing SMS statistics and SMS invoicing
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-dx
+  definition:
+    $text: http://api.obos.no/sms-styrerommet/v1/api/swagger.json
