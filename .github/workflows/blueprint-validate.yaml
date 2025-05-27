@@ -62,8 +62,8 @@ jobs:
             status_code="${response: -3}"
             if [[ "$status_code" -ne 200 ]]; then
               echo "❌ Validation failed for $KIND:$NAME with status code $status_code"
-              cat "$entity"
               cat response.json
+              cat "$entity"
               exit 1
             fi
           done
