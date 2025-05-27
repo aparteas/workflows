@@ -3,9 +3,7 @@ name: Validate Blueprint catalog content
 on:
   workflow_call:
     secrets:
-      BACKSTAGE_BASE_URL:
-        required: true
-      BACKSTAGE_API_TOKEN:
+      api-token:
         required: true
 
 env:
@@ -16,8 +14,8 @@ jobs:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     env:
-      BACKSTAGE_BASE_URL: ${{ secrets.BACKSTAGE_BASE_URL }}
-      BACKSTAGE_API_TOKEN: ${{ secrets.BACKSTAGE_API_TOKEN }}
+      BLUEPRINT_BASE_URL: ${{ vars.BLUEPRINT_BASE_URL }}
+      BLUEPRINT_API_TOKEN: ${{ secrets.api-token }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,9 +42,9 @@ jobs:
           for entity in entity_*.yaml; do
             echo "--- Validating entity ---"
             json=$(yq -o=json "$entity")
-            response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BACKSTAGE_BASE_URL/api/catalog/validate-entity" \
+            response=$(curl -s -w "%{http_code}" -o response.json -X POST "$BLUEPRINT_BASE_URL/api/catalog/validate-entity" \
               -H "Content-Type: application/json" \
-              -H "Authorization: Bearer $BACKSTAGE_API_TOKEN" \
+              -H "Authorization: Bearer $BLUEPRINT_API_TOKEN" \
               -d "{\"location\": \"url:https://github.com/$ORG_NAME/$REPO_NAME/blob/$BRANCH_NAME/${{ env.CATALOG_FILE }}\", \"entity\": $json}")
             
             status_code="${response: -3}"
