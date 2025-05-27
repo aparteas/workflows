@@ -8,13 +8,13 @@ on:
 
 env:
   CATALOG_FILE: .blueprint/catalog-info.yaml
+  BLUEPRINT_BASE_URL: https://blueprint.obos.dev
 
 jobs:
   validate:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     env:
-      BLUEPRINT_BASE_URL: ${{ vars.BLUEPRINT_BASE_URL }}
       BLUEPRINT_API_TOKEN: ${{ secrets.api-token }}
     steps:
       - name: Checkout code
@@ -31,7 +31,7 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Validate ${{ env.CATALOG_FILE }}
+      - name: Validate
         if: steps.file-check.outputs.changed == 'true'
         run: |
           ORG_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
@@ -50,10 +50,10 @@ jobs:
               -d "{\"location\": \"url:https://github.com/$ORG_NAME/$REPO_NAME/blob/$BRANCH_NAME/${{ env.CATALOG_FILE }}\", \"entity\": $json}")
           
             status_code="${response: -3}"
-            body=$(cat response.json)
             if [ "$status_code" -ne 200 ]; then
+              response_body=$(cat response.json)
               cat "$entity"
-              echo "$body"
+              echo "$response_body"
               echo "❌ Validation failed with status code $status_code"
               exit 1
             fi
