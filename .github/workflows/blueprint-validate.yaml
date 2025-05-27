@@ -47,8 +47,6 @@ jobs:
           # Split multi-document YAML into separate files
           awk 'BEGIN{n=0;} /^---/{n++} {print > ("entity_" n ".yaml")}' "${CATALOG_FILE}"
           
-          ls -al
-          
           # Validate each entity
           for entity in entity_*.yaml; do
             KIND=$(yq '.kind' "$entity")
